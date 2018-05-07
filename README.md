@@ -1,111 +1,194 @@
-# lem_in
-Projet 42 - "Ce projet a pour but de vous faire coder un gestionaire de fourmillière."
+# 42 _ lem_in
 
-===================================
+An ant farm manager
 
-Votre programme va recevoir sur l’entrée standard la description de la fourmilière
-pour la forme suivante :
-nombre_de_fourmis
-les_salles
-les_tubes
-• La fourmilière est décrite par ses liaisons :
+## Info
+Some students of the School of Wizardry have created Hex, a thinking machine.
+
+It is composed of ants for calculus, bee-hives and bees for memory and a mouse for (.. Huh,
+right, what for already?) cheese (to feed the mouse) and a feather for writing.
+
+> For more information, please refer to Terry Pratchett’s books, so
+that you can switch your mind off 42. (**) Ook !
+
+We are going to look in depth at its calculus bit.
+
+How does it work? **Simple**! We make an **ant farm**, with tunnels and rooms; we place the ants on one side; and we look at how they find the exit.
+
+How do we build an ant farm ?
+
+We need tubes and rooms, we join the rooms to one another with as many tubes as we need.
+A tube joins two rooms to each other.
+
+No more than that.
+
+A room can be linked to an infinite number of rooms and by as many tubes as deemed necessary. Then we must bury the ant farm (wherever you want).
+
+This is extremely important to ensure that ants don’t cheat and look at your design before the game starts.
+
+Because arts and crafts with boxes, tape and ropes are not our greatest strength, we will
+create a digital version instead.
+The goal of this project is to create an “Hex” simulator.
+
+
+## how does it work ?
+Your program will receive the data describing the ant farm from the standard output
+in the following format
+```
+number_of_ants
+the_rooms
+the_links
+```
+
+The ant farm is defined by the following links:
+```
+$> cat test_map/subject.map
+10
 ##start
-1 23 3
-2 16 7
+room1 23 3
+room2 16 7
 #commentaire
-3 16 3
-4 16 5
-5 9 3
-6 1 5
-7 4 8
+room3 16 3
+room4 16 5
+room5 9 3
+room6 1 5
+room7 4 8
 ##end
-0 9 5
-0-4
-0-6
-1-3
-4-3
-5-2
-3-5
+room0 9 5
+room0-room4
+room0-room6
+room1-room3
+room4-room3
+room5-room2
+room3-room5
 #autre commentaire
-4-2
-2-1
-7-6
-7-2
-7-4
-6-5
-• Ce qui représente :
+room4-room2
+room2-room1
+room7-room6
+room7-room2
+room7-room4
+room6-room5
+```
+
+Which corresponds to the following representation
+
+```
            _______________
-  		 /                \
-  ______[5]----[3]----[1] |
-/               |     /   |
-[6]-----[0]----[4]   /    |
- \    _________/ |  /     |
-  \ /          [2]/______/
-  [7]_________/
+          /               \
+  ______[5]----[3]----[1]  |
+ /              |    /     |
+[6]-----[0]----[4]  /      |
+ \    _________/|  /       |
+  \  /         [2]/_______/
+   [7]_________/
 
-On a donc 2 parties :
-◦ La définition des salles sous la forme suivante : nom coord_x coord_y
-◦ La définition des tubes : nom1-nom2
-◦ Le tout entre-coupé de commentaires qui commencent par #
+```
+There are two parts
 
-Le but de tout ca ?
-• Le but du projet est de trouver le moyen le plus rapide de faire traverser la fourmilière
-par n fourmis.
-• Évidemment, il y a quelques contraintes. Pour arriver le premier, il faut prendre le
-chemin le plus court (et pas forcément pour autant le plus simple), ne pas marcher
-sur ses congénères, tout en évitant les embouteillages.
-• Au début du jeu, toutes les fourmis sont sur la salle indiquée par la commande
-##start. Le but est de les amener sur la salle indiquée par la commande ##end en
-prenant le moins de tours possible. Chaque salle peut contenir une seule fourmi à
-la fois (sauf ##start et ##end qui peuvent en contenir autant qu’il faut).
-• On considère que les fourmis sont toutes dans la salle ##start au démarrage
-• Vous n’afficherez à chaque tour que les fourmis qui ont bougé
-• À chaque tour vous pouvez déplacer chaque fourmi une seule fois et ce suivant un
-tube (la salle réceptrice doit être libre).
-• Vous devez sortir le résultat sur la sortie standard sous la forme suivante :
-nombre_de_fourmis
-les_salles
-les_tubes
+* The rooms, which are defined by: `name` `coord_x` `coord_y`
+* The links, which are defined by: `name1`-`name2`
+* All of it is broken by comments, which start with `#`
+
+The results is printed on the standard output in the following format
+```
+// The map
+
 Lx-y Lz-w Lr-o ...
-Où x, z, r sont des numéros de fourmis (allant de 1 à nombre_de_fourmis) et
-y, w, o des noms de salles
+```
+`x`, `z`, `r` represents the ants’ numbers (going from 1 to number_of_ants)
+
+and `y`, `w`, `o` represents the rooms’ names.
+
+## Compiling
+> Made for OS X only
+
+Run `Make`
+
+## Try it !
+
+./lem-in < `map`
+
+#### Exemple
+
+```
+$> ./lem-in < test_map/subject.map
+10
+##start
+room1 23 3
+room2 16 7
+#commentaire
+room3 16 3
+room4 16 5
+room5 9 3
+room6 1 5
+room7 4 8
+##end
+room0 9 5
+room0-room4
+room0-room6
+room1-room3
+room4-room3
+room5-room2
+room3-room5
+#autre commentaire
+room4-room2
+room2-room1
+room7-room6
+room7-room2
+room7-room4
+room6-room5
+
+L1-room3 L2-room2
+L1-room4 L2-room7 L3-room3 L4-room2
+L1-room0 L2-room6 L3-room4 L4-room7 L5-room3 L6-room2
+L2-room0 L3-room0 L4-room6 L5-room4 L6-room7 L7-room3 L8-room2
+L4-room0 L5-room0 L6-room6 L7-room4 L8-room7 L9-room3 L10-room2
+L6-room0 L7-room0 L8-room6 L9-room4 L10-room7
+L8-room0 L9-room0 L10-room6
+L10-room0
+```
+
+#### Options
+
+`--nbstep` print number of move instead of result
+
+`-start` `name` change the start room
+
+`-end` `name` change the end room
+
+`-nbant` `nb` change the number of ant
+
+#### Exemple
+
+```
+$> ./lem-in < test_map/subject.map --nbstep -start "room3" -end "room7" -nbant 42
+16
+```
+
+## Visualizer
+
+For a better understanding of the path(s) choosed i made a visualizer
+
+## Commands
+
+| Key           | Action        |
+| ------------- |:-------------:|
+| arrow or wasd | move          |
+| shift         | zoom-in       |
+| ctrl          | zoom-out      |
+| space         | play / pause  |
+| right-alt     | next-move     |
+| enter         | full-screen   |
 
 
+You can run it like this
 
-Compile with make
-test default map with make test
+./lem-in < `map` | ./lem_in_visu/lem-in-visu
 
+```
+$> ./lem-in < test_map/subject.map | ./lem_in_visu/lem-in-visu
+```
 
-
-============================================================
-============================================================
-
-Compile with "make"
-test visu with "make test" for a default map
-			or "make test ARG=path_to_map"
-
-VISU CONTROL
-=================
-
-move with wasd or up-left-bottom-right
-play pause "space"
-zoom out "shift"
-zoom in "ctrl"
-next move "r_alt"
-
-
-lem-in argument modifier:
-
---nbstep
-	print number of move
-
--start "name"
-	change the start room
-
--end "name"
-	change the end room
-
--nbant nb
-	change the number of ant
-
-exemple: "./lem-in --nbstep -start "room3" -end "room7" -nbant 42 < map"
+![subject.map](../assets/subject.map.png)
+![my3.map](../assets/my3.map.png)
+![zoom_in](../assets/zoom_in.png)

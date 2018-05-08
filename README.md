@@ -108,7 +108,7 @@ Run `Make`
 
 ./lem-in < `map`
 
-#### Exemple
+#### Example
 
 ```
 $> ./lem-in < test_map/subject.map
